@@ -1,3 +1,2 @@
-*.log
-*.aux
-*.pdf
+generated/
+hypha_info.txt
