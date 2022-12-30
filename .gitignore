@@ -1,2 +1,4 @@
 generated/
 hypha_info.txt
+token.pickle
+google_creds.json

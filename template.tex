@@ -7,26 +7,21 @@
 \begin{letter}{# donor_name # #! if donor_details !#\\# donor_details # #! endif !#}
 
 	\opening{Thank you for your donation!}	
-	Date of donation: October 18, 2022
+	Date of donation: # donation_date.strftime('%b %d, %Y') #
 	
 	Donated material:
-	\begin{enumerate}
-		\item 4-Channel oscilloscope \$1800
-		\item 2U Function generator \$250
-		\item Function generator plug-in and chassis \$175
-		\item Variable power supply \$100
-		\item Frequency counter plug-in \$75
+	\begin{enumerate} #!for donated_item in donated_items !#
+	    \item # donated_item.name # \$# "%.2f"|format(donated_item.value) #
 
-	\end{enumerate}
+	#! endfor !#\end{enumerate}
 
-	\textbf{Total value: \$2400}
+	\textbf{Total value: \$# "%.2f"|format(total_value) #}
 	
-	We will use your donations to provide equipment for other nonprofits, especially missions organizations.
-	I just shipped out four laptops to missions workers with Frontiers in a closed contry.
-	Your donations pay for replacement parts for those laptops and international shipping.
-	Thank you again!
-	
-	\closing{In Christ}
+	We will use your donations to provide equipment for other nonprofits.
+	This week we'll be donating 11 Latitudes to charities in Colorado springs
+	with several more on the way!
+
+	\closing{Thank you!}
 
 	\vspace*{\fill}
 	\ps

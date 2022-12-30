@@ -2,6 +2,8 @@ from subprocess import run
 
 from jinja2 import Environment, FileSystemLoader
 
+import google_sheets
+
 template_env = Environment(
     loader=FileSystemLoader('.'),
     block_start_string='#!', block_end_string='!#',
@@ -10,18 +12,20 @@ template_env = Environment(
 )
 template = template_env.get_template('template.tex')
 
-info = dict(
-    donation_date='2022-10-18',
-    donor_name='Jim Allen',
-    donor_details='cat town'
-)
 
-with open('hypha_info.txt') as info_file:
-    info['hypha'] = info_file.read().strip()
+for donation in google_sheets.get_donations():
+    with open('hypha_info.txt') as info_file:
+        donation['hypha'] = info_file.read().strip()
 
-rendered_str = template.render(**info)
+    donation['total_value'] = sum([item['value'] for item in donation['donated_items']])
 
-run(
-    ['pdflatex', '-jobname', f'{info["donation_date"]} {info["donor_name"]}', '-output-directory', 'generated'],
-    input=rendered_str.encode('utf-8'), check=True, capture_output=True
-)
+    rendered_str = template.render(**donation)
+
+    run(
+        [
+            'pdflatex',
+            '-jobname', f'{donation["donation_date"].strftime("%Y-%m-%d")} {donation["donor_name"]}',
+            '-output-directory', 'generated'
+        ],
+        input=rendered_str.encode('utf-8'), check=True, capture_output=True
+    )
