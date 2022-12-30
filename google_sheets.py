@@ -49,7 +49,7 @@ def get_donations():
             donations.append(dict(
                 donation_date=datetime.strptime(row[5], '%Y-%m-%d'),
                 donor_name=row[1], donor_details=row[2],
-                donated_items=[],
+                donated_items=[], donation_id=donation_id,
             ))
 
         donations[-1]['donated_items'].append(dict(
